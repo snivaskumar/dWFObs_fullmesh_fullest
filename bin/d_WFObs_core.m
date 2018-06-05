@@ -85,8 +85,15 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
     end
     fusion          = upper( scriptOptions.fusion );
     fusion_type     = upper( strucObs.fusionDomain );
-    fusion_weight   = upper( strucObs.fusion_weight );
-    constant        = strucObs.fusion_CIconstant; 
+    if strcmp(fusion,'YES')
+        if ( d_sol{i}.k == 1 )||( rem(d_sol{i}.k,10) == 0 )
+            fusion_weight   = 'OPTIMAL';
+            constant        = strucObs.fusion_CIconstant; 
+        else
+            fusion_weight   = upper( strucObs.fusion_weight );
+            constant        = strucObs.omega;
+        end
+    end
     if ( strcmp(strucObs.filtertype,'dexkf')||...
             strcmp(strucObs.filtertype,'exkf') )&&...
             strcmp(fusion,'YES')
@@ -111,7 +118,7 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
 %             [zf, Zf, ~] = fuze2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant);
 %             Zf = pinv( Zf );      
 %             zf = Zf*zf;        
-            [zf, Zf, ~] = fuse2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant);
+            [zf, Zf, ~, strucObs.omega] = fuse2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant);
 %             d_sol{1}.x = zf{1};         d_strucObs{1}.Pk = Zf{1};
 %             d_sol{2}.x = zf{2};         d_strucObs{2}.Pk = Zf{2};
             d_sol{1}.x = zf;         d_strucObs{1}.Pk = Zf;

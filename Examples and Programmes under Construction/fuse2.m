@@ -1,4 +1,4 @@
-function [zf, Zf, xf] = fuse2(z1,z2,Z1,Z2,x1,x2,type);
+function [zf, Zf, xf, omega] = fuse2(z1,z2,Z1,Z2,x1,x2,type,fusion_weight,constant);
 % [zf, Zf, xf] = fuze2(z1,z2,Z1,Z2,x1,x2,type);
 % type    1 for CI, 2 for EI, 3 for ICI
 
@@ -41,20 +41,25 @@ X_b = T_tmp{2}*Z2*T_tmp{2}';
 % X_b(ia{2},ia{2}) = X_a(ia{2},ia{2});
 %%%%%%
 
-if type == 0
-    Zf      = pinv(pinv(X_a) + pinv(X_b));
-    zf      = Zf*(pinv(X_a)*x_a + pinv(X_b)*x_b);
+if strcmp(type,'CIN')
+    Zf      = inv(inv(X_a) + inv(X_b));
+    zf      = Zf*(inv(X_a)*x_a + inv(X_b)*x_b);
     0;
-elseif type == 1
+elseif strcmp(type,'CI2')
     % CI
     ZA      = X_a;
     ZB      = X_b;
-    f       = @(w) trace( pinv(w*pinv(ZA) + (1-w)*pinv(ZA)) ); % arg (min -f) = arg (max f)
-    omega   = fminbnd(f,0,1,optimset('Display','off'));
-    Zf      = pinv(omega*pinv(ZA) + (1-omega)*pinv(ZA));
-    zf      = Zf*(omega*pinv(ZA)*x_a + (1-omega)*pinv(ZB)*x_b);
+    if strcmp(fusion_weight,'OPTIMAL')
+        f       = @(w) trace( inv(w*inv(ZA) + (1-w)*inv(ZB)) ); % arg (min -f) = arg (max f)
+        omega   = fminbnd(f,0,1,optimset('Display','off'));
+    else
+        omega   = constant;
+    end
+    omega
+    Zf      = inv(omega*inv(ZA) + (1-omega)*inv(ZB));
+    zf      = Zf*(omega*inv(ZA)*x_a + (1-omega)*inv(ZB)*x_b);
     1;
-elseif type == 2
+elseif strcmp(type,'EI')
     % EI
     [Si,Di] = eig(X_a);
     [Sj,Dj] = eig(pinv(Di^0.5)*pinv(Si)*X_b*Si*pinv(Di^0.5));
@@ -75,12 +80,16 @@ elseif type == 2
     Zf  = pinv(pinv(X_a) + pinv(X_b) - pinv(Xij));
     zf  = Zf*(inv(X_a)*x_a + inv(X_b)*x_b - inv(X_ij)*xij);
     2;
-elseif type == 3    
+elseif strcmp(type,'ICI')
     % ICI
     ZA      = X_a;
     ZB      = X_b;
-    ff      = @(w) trace( (pinv(ZA) + pinv(ZB) - pinv(w*ZA + (1-w)*ZB))); % min -f = max f
-    omega   = fminbnd(ff,0,1,optimset('Display','off'));
+    if strcmp(fusion_weight,'OPTIMAL')
+        ff      = @(w) trace( (pinv(ZA) + pinv(ZB) - pinv(w*ZA + (1-w)*ZB))); % min -f = max f
+        omega   = fminbnd(ff,0,1,optimset('Display','off'));
+    else
+        omega   = constant;
+    end
     Xij     = omega*ZA + (1-omega)*ZB;
     Zf      = pinv(pinv(X_a) + pinv(X_b) - pinv(Xij));
 

@@ -34,12 +34,12 @@ strucObs.sensorsPath = 'sensors_2turb_alm'; % measurement setup filename (see '/
         
 scriptOptions.Turbulence    = 'centralize'; % 'centralize' for same old turbulence model
 scriptOptions.sysLen        = 4;
-scriptOptions.fusion        = 'yes';
-strucObs.fusionDomain       = 'CIN';
+scriptOptions.fusion        = 'no';
+strucObs.fusionDomain       = 'ICI';
 strucObs.fusion_weight      = 'constant';    % IFAC Weight
 strucObs.fusion_CIconstant  = 0.5;
 % Kalman filter settings
-strucObs.filtertype = 'dexkf'; % Observer types are outlined next
+strucObs.filtertype = 'exkf'; % Observer types are outlined next
 switch lower(strucObs.filtertype)
     % Distributed Extended Kalman filter (ExKF)
     case {'dexkf'}

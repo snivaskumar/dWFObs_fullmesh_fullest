@@ -57,20 +57,20 @@ for j = 1:2
     end
     Wp00{j} = d_Wp{j}; sol_array00{j} = d_sol_array{j}; sys00{j} = d_sys{j};
     scriptOptions00{j} = d_scriptOptions{j}; strucObs00{j} = d_strucObs{j};
-end
-%DDExKF:1D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear scriptOptions sol_array strucObs sys Wp
-load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_1D_IFAC_uinf5_noest/workspace.mat')
-for j = 1:2
-    for i = 1:d_Wp{j}.sim.NN
-        u01{j}(i) = d_sol_array{j}(i).site.u_Inf;
-        RMSE01{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
-        maxError01{j}(i) = d_sol_array{j}(i).score.maxError;
-        RMSE_flow01{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
-    end
-    Wp01{j} = d_Wp{j}; sol_array01{j} = d_sol_array{j}; sys01{j} = d_sys{j};
-    scriptOptions01{j} = d_scriptOptions{j}; strucObs01{j} = d_strucObs{j};
-end
+% end
+% %DDExKF:1D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clear scriptOptions sol_array strucObs sys Wp
+% load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_1D_IFAC_uinf5_noest/workspace.mat')
+% for j = 1:2
+%     for i = 1:d_Wp{j}.sim.NN
+%         u01{j}(i) = d_sol_array{j}(i).site.u_Inf;
+%         RMSE01{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+%         maxError01{j}(i) = d_sol_array{j}(i).score.maxError;
+%         RMSE_flow01{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+%     end
+%     Wp01{j} = d_Wp{j}; sol_array01{j} = d_sol_array{j}; sys01{j} = d_sys{j};
+%     scriptOptions01{j} = d_scriptOptions{j}; strucObs01{j} = d_strucObs{j};
+% end
 %DDExKF:2D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
 load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest/workspace.mat')
@@ -84,32 +84,32 @@ for j = 1:2
     Wp02{j} = d_Wp{j}; sol_array02{j} = d_sol_array{j}; sys02{j} = d_sys{j};
     scriptOptions02{j} = d_scriptOptions{j}; strucObs02{j} = d_strucObs{j};
 end
-%DDExKF:3D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
-load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_3D_IFAC_uinf5_noest/workspace.mat')
-for j = 1:2
-    for i = 1:d_Wp{j}.sim.NN
-        u03{j}(i) = d_sol_array{j}(i).site.u_Inf;
-        RMSE03{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
-        maxError03{j}(i) = d_sol_array{j}(i).score.maxError;
-        RMSE_flow03{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
-    end
-    Wp03{j} = d_Wp{j}; sol_array03{j} = d_sol_array{j}; sys03{j} = d_sys{j};
-    scriptOptions03{j} = d_scriptOptions{j}; strucObs03{j} = d_strucObs{j};
-end
-%DDExKF:2D:SQUARE (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
-load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2Dsq_IFAC_uinf5_noest/workspace.mat')
-for j = 1:2
-    for i = 1:d_Wp{j}.sim.NN
-        u04{j}(i) = d_sol_array{j}(i).site.u_Inf;
-        RMSE04{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
-        maxError04{j}(i) = d_sol_array{j}(i).score.maxError;
-        RMSE_flow04{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
-    end
-    Wp04{j} = d_Wp{j}; sol_array04{j} = d_sol_array{j}; sys04{j} = d_sys{j};
-    scriptOptions04{j} = d_scriptOptions{j}; strucObs04{j} = d_strucObs{j};
-end
+% %DDExKF:3D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+% load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_3D_IFAC_uinf5_noest/workspace.mat')
+% for j = 1:2
+%     for i = 1:d_Wp{j}.sim.NN
+%         u03{j}(i) = d_sol_array{j}(i).site.u_Inf;
+%         RMSE03{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+%         maxError03{j}(i) = d_sol_array{j}(i).score.maxError;
+%         RMSE_flow03{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+%     end
+%     Wp03{j} = d_Wp{j}; sol_array03{j} = d_sol_array{j}; sys03{j} = d_sys{j};
+%     scriptOptions03{j} = d_scriptOptions{j}; strucObs03{j} = d_strucObs{j};
+% end
+% %DDExKF:2D:SQUARE (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+% load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2Dsq_IFAC_uinf5_noest/workspace.mat')
+% for j = 1:2
+%     for i = 1:d_Wp{j}.sim.NN
+%         u04{j}(i) = d_sol_array{j}(i).site.u_Inf;
+%         RMSE04{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+%         maxError04{j}(i) = d_sol_array{j}(i).score.maxError;
+%         RMSE_flow04{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+%     end
+%     Wp04{j} = d_Wp{j}; sol_array04{j} = d_sol_array{j}; sys04{j} = d_sys{j};
+%     scriptOptions04{j} = d_scriptOptions{j}; strucObs04{j} = d_strucObs{j};
+% end
 %DDExKF:2D (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
 load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_nofus/workspace.mat')
@@ -136,12 +136,77 @@ for j = 1:2
     Wp06{j} = d_Wp{j}; sol_array06{j} = d_sol_array{j}; sys06{j} = d_sys{j};
     scriptOptions06{j} = d_scriptOptions{j}; strucObs06{j} = d_strucObs{j};
 end
+%DDExKF:2D, turbC (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_nofus_turbC/workspace.mat')
+for j = 1:2
+    for i = 1:d_Wp{j}.sim.NN
+        u07{j}(i) = d_sol_array{j}(i).site.u_Inf;
+        RMSE07{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+        maxError07{j}(i) = d_sol_array{j}(i).score.maxError;
+        RMSE_flow07{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+    end
+    Wp07{j} = d_Wp{j}; sol_array07{j} = d_sol_array{j}; sys07{j} = d_sys{j};
+    scriptOptions07{j} = d_scriptOptions{j}; strucObs07{j} = d_strucObs{j};
+end
+%DDExKF:2D, turbC (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_IFAC_turbC/workspace.mat')
+for j = 1:2
+    for i = 1:d_Wp{j}.sim.NN
+        u08{j}(i) = d_sol_array{j}(i).site.u_Inf;
+        RMSE08{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+        maxError08{j}(i) = d_sol_array{j}(i).score.maxError;
+        RMSE_flow08{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+    end
+    Wp08{j} = d_Wp{j}; sol_array08{j} = d_sol_array{j}; sys08{j} = d_sys{j};
+    scriptOptions08{j} = d_scriptOptions{j}; strucObs08{j} = d_strucObs{j};
+end
+%DDExKF:2D, turbC (CIN)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_CIN_turbC/workspace.mat')
+for j = 1:2
+    for i = 1:d_Wp{j}.sim.NN
+        u09{j}(i) = d_sol_array{j}(i).site.u_Inf;
+        RMSE09{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+        maxError09{j}(i) = d_sol_array{j}(i).score.maxError;
+        RMSE_flow09{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+    end
+    Wp09{j} = d_Wp{j}; sol_array09{j} = d_sol_array{j}; sys09{j} = d_sys{j};
+    scriptOptions09{j} = d_scriptOptions{j}; strucObs09{j} = d_strucObs{j};
+end
+%DDExKF:2D, turbC (ICI)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_ICIc0p5_turbC/workspace.mat')
+for j = 1:2
+    for i = 1:d_Wp{j}.sim.NN
+        u10{j}(i) = d_sol_array{j}(i).site.u_Inf;
+        RMSE10{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+        maxError10{j}(i) = d_sol_array{j}(i).score.maxError;
+        RMSE_flow10{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+    end
+    Wp10{j} = d_Wp{j}; sol_array10{j} = d_sol_array{j}; sys10{j} = d_sys{j};
+    scriptOptions10{j} = d_scriptOptions{j}; strucObs10{j} = d_strucObs{j};
+end
 
 figure, plot(RMSE0), hold on, plot(RMSE1), plot(RMSE22), 
-plot(RMSE02{1}),plot(RMSE06{1})
-legend('sim','EnKF','DExKF: 2D (arch. 1)','DDExKF:2D (IFAC)','DDExKF:2D (CIN)')
+plot(RMSE02{1}),plot(RMSE05{1}),plot(RMSE05{2}),plot(RMSE06{1}),
+plot(RMSE10{1})
+title('Centreline Error')
+legend('sim','EnKF','DExKF: 2D (arch. 1)','DDExKF:2D (IFAC)',...
+    'DDExKF:2D,sys1 (No Fusion)','DDExKF:2D,sys2 (No Fusion)','DDExKF:2D (CIN)',...
+    'DDExKF:2D (ICI)')
+lq = findobj(gcf,'type','line');
+set(lq,'linewidth',1.15);
 figure, plot(RMSE_flow0), hold on, plot(RMSE_flow1),plot(RMSE_flow22),
-plot(RMSE_flow02{1}),plot(RMSE_flow02{1}),
+plot(RMSE_flow02{1}),plot(RMSE_flow05{1}),plot(RMSE_flow05{2}),plot(RMSE_flow06{1}),
+plot(RMSE_flow10{1})
+title('Flow Error')
+legend('sim','EnKF','DExKF: 2D (arch. 1)','DDExKF:2D (IFAC)',...
+    'DDExKF:2D,sys1 (No Fusion)','DDExKF:2D,sys2 (No Fusion)','DDExKF:2D (CIN)',...
+    'DDExKF:2D (ICI)')
+lq = findobj(gcf,'type','line');
+set(lq,'linewidth',1.15);
 % figure, plot(RMSE0), hold on, plot(RMSE1), plot(RMSE00{1}), plot(RMSE01{1}),
 % plot(RMSE02{1}),plot(RMSE03{1}),plot(RMSE05{1}),plot(RMSE06{1})
 % legend('sim','EnKF','DExKF (IFAC)','DDExKF:1D (IFAC)','DDExKF:2D (IFAC)',...
@@ -150,8 +215,7 @@ plot(RMSE_flow02{1}),plot(RMSE_flow02{1}),
 % plot(RMSE_flow02{1}), plot(RMSE_flow03{1}), plot(RMSE_flow05{1}), plot(RMSE_flow06{1})
 % legend('sim','EnKF','DExKF (IFAC)','DDExKF:1D (IFAC)','DDExKF:2D (IFAC)',...
 %     'DDExKF:3D (IFAC)','DDExKF:2D (No Fusion)','DDExKF:2D (CIN)')
-lq = findobj(gcf,'type','line');
-set(lq,'linewidth',1.5);
+
 % SIM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 % plotWFObs( Wp0,sol_array0,sys0,scriptOptions0,strucObs0 );
 % EnKF%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,13 +223,13 @@ plotWFObs( Wp1,sol_array1,sys1,scriptOptions1,strucObs1 );
 % DExKF: 2D (archiecture 1)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plotWFObs( Wp22,sol_array22,sys22,scriptOptions22,strucObs22 );
 % DExKF (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotWFObs( Wp00{1},sol_array00{1},sys00{1},scriptOptions00{1},strucObs00{1});
+% plotWFObs( Wp00{1},sol_array00{1},sys00{1},scriptOptions00{1},strucObs00{1});
 % DDExKF: 1D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plotdWFObs( Wp01{1},sol_array01{1},sys01{1},scriptOptions01{1},strucObs01{1} );
 % DDExKF: 2D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 plotdWFObs( Wp02{1},sol_array02{1},sys02{1},scriptOptions02{1},strucObs02{1} );
 % DDExKF: 3D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotdWFObs( Wp03{1},sol_array03{1},sys03{1},scriptOptions03{1},strucObs03{1} );
+% plotdWFObs( Wp03{1},sol_array03{1},sys03{1},scriptOptions03{1},strucObs03{1} );
 % DDExKF: 2Dsq (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plotdWFObs( Wp04{1},sol_array04{1},sys04{1},scriptOptions04{1},strucObs04{1} );
 % DDExKF: 2D (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

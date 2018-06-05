@@ -77,7 +77,6 @@ scriptOptions.Animate           = 10;  % Show results every x iterations (0: no 
 % Saving settings
 scriptOptions.savePlots         = 1;  % Save all plots in external files at each time step
 scriptOptions.saveWorkspace     = 1;  % Save complete workspace at the end of simulation
-% scriptOptions.savePath          = ['/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/WFObs/results/tmp']; % Destination folder of saved files
 scriptOptions.savePath          = ['/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs/results/tmp']; % Destination folder of saved files
 
 % Configuration file
