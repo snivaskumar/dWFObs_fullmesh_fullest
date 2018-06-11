@@ -1,63 +1,28 @@
 function plotCOV( Wp,sol_array,sys,scriptOptions,strucObs);
 
-% sol             = sol_array(end);
-% measuredData    = sol.measuredData;
-% C               = strucObs.Pk;
-% Nx              = Wp.mesh.Nx;
-% Ny              = Wp.mesh.Ny;
-% 
-% x = [vec(sol.u(3:end-1,2:end-1)'); vec(sol.v(2:end-1,3:end-1)')];
-% y = [vec(measuredData.uq(3:end-1,2:end-1)'); vec(measuredData.vq(2:end-1,3:end-1)')];
-% 
-% % % e       = (sol.u - measuredData.uq);
-% e       = x - y; 
-% % MDis    = e'*inv(C)*e; 
-% MDis    = mahal(y,x); 
-
-% ex_Wp = Wp;
-% ex_sol_array = sol_array;
-% ex_sys = sys;
-% ex_scriptOptions = scriptOptions;
-% ex_strucObs = strucObs;
-% 
-% address;
-% 
-% Wp = ex_Wp;
-% sol_array = ex_sol_array;
-% sys = ex_sys;
-% scriptOptions = ex_scriptOptions;
-% strucObs = ex_strucObs;
-
-
+sol = sol_array(end);
 Nx  = Wp.mesh.Nx;
 Ny  = Wp.mesh.Ny;
 if ~length(strfind(scriptOptions.savePath,'EnKF'))
-    PP          = strucObs.Pk;
     P           = diag(strucObs.Pk);
 else
     Aenf    = strucObs.Aen;
     Aenft   = Aenf-repmat(mean(Aenf,2),1,strucObs.nrens);
 %     P       = ( 1/(strucObs.nrens-1) )*Aenft*Aenft';
-    PP      = Aenft*Aenft';
-    P       = diag(PP);
+    P       = Aenft*Aenft';
+    P       = diag(P);
 end
-tmp                     = max(max(P));
+% tmp                     = max(max(P));
+t
 Puv                     = tmp*ones(Nx,Ny);
 Puv(3:end-1,2:end-1)    = reshape(P(1:(Nx-3)*(Ny-2)),Ny-2,Nx-3)';
 [Puv,~,~] = Updateboundaries(Nx,Ny,Puv,Puv,Puv);    
-
-% % Ptmp = min(min(Puv));
-% Ptmp = mean(mean(Puv));
-% for i = 1:length(Ix)
-%     Puv(Ix(i),Iy(i)) = Ptmp;
-% end
 
 hFigs = {};
 scrsz = get(0,'ScreenSize'); 
 hFigs{1}=figure('color',[1 1 1],'Position',[50 50 floor(scrsz(3)/1.1) floor(scrsz(4)/1.1)], 'MenuBar','none','ToolBar','none','visible', 'on');
 set(hFigs{1},'defaultTextInterpreter','latex')
 data{1} = struct('x',Wp.mesh.ldyy, 'y',Wp.mesh.ldxx2,'z',Puv,'title','Co_variance');
-data{2} = struct('x',Wp.mesh.ldyy, 'y',Wp.mesh.ldxx2,'z',MDis,'title','Mahalanobis Distance');
         
 % applied correction for yaw angle: wake was forming at wrong side
 rotorRotation = -.5*Wp.turbine.Drotor*exp(1i*-Wp.turbine.input(sol.k).phi'*pi/180); 

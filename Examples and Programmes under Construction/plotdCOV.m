@@ -1,8 +1,27 @@
 function plotdCOV( Wp,sol_array,sys,scriptOptions,strucObs);
 
-sol = sol_array(end);
-Nx  = Wp.mesh.Nx;
-Ny  = Wp.mesh.Ny;
+sol             = sol_array(end);
+measuredData    = sol.measuredData;
+C               = strucObs.Pk;
+Nx              = Wp.mesh.Nx;
+Ny              = Wp.mesh.Ny;
+
+x = [vec(sol.u(3:end-1,2:end-1)'); vec(sol.v(2:end-1,3:end-1)')];
+y = [vec(measuredData.uq(3:end-1,2:end-1)'); vec(measuredData.vq(2:end-1,3:end-1)')];
+
+% % e       = (sol.u - measuredData.uq);
+e       = x - y; 
+C = diag(C);
+error = e.*e;
+MDis = error./C; 
+% MDis    = e'*inv(C)*e; 
+% MDis    = mahal(y,x); 
+
+tmp                     = max(max(MDis));
+dis                     = tmp*ones(Nx,Ny);
+dis(3:end-1,2:end-1)    = reshape(MDis(1:(Nx-3)*(Ny-2)),Ny-2,Nx-3)';
+[dis,~,~] = Updateboundaries(Nx,Ny,dis,dis,dis);
+
 if ~length(strfind(scriptOptions.savePath,'EnKF'))
     P       = diag(strucObs.Pk);
 else
@@ -14,12 +33,14 @@ end
 tmp                     = max(max(P));
 Puv                     = tmp*ones(Nx,Ny);
 Puv(3:end-1,2:end-1)    = reshape(P(1:(Nx-3)*(Ny-2)),Ny-2,Nx-3)';
+[Puv,~,~] = Updateboundaries(Nx,Ny,Puv,Puv,Puv);
 
 hFigs = {};
 scrsz = get(0,'ScreenSize'); 
 hFigs{1}=figure('color',[1 1 1],'Position',[50 50 floor(scrsz(3)/1.1) floor(scrsz(4)/1.1)], 'MenuBar','none','ToolBar','none','visible', 'on');
 set(hFigs{1},'defaultTextInterpreter','latex')
 data{1} = struct('x',Wp.mesh.ldyy, 'y',Wp.mesh.ldxx2,'z',Puv,'title','Co_variance');
+data{2} = struct('x',Wp.mesh.ldyy, 'y',Wp.mesh.ldxx2,'z',dis,'title','Mahalanobis Distance');
         
 % applied correction for yaw angle: wake was forming at wrong side
 rotorRotation = -.5*Wp.turbine.Drotor*exp(1i*-Wp.turbine.input(sol.k).phi'*pi/180); 
@@ -29,8 +50,14 @@ set(0,'CurrentFigure',hFigs{1}); clf
 subplotDim = numSubplots(length(data));
 for j = 1:length(data)
 	subplot(subplotDim(1),subplotDim(2),j);
-    cmax = (max(max(Puv)));
+    cmax = 1;
+%     cmax = (max(max(Puv)));
     cmin = (min(min(Puv)));
+    if j == 2
+%         cmax = (max(max(dis)));
+        cmax = 3;
+        cmin = (min(min(dis)));
+    end
     contourf(data{j}.x,data{j}.y,data{j}.z,cmin:0.1:cmax,'Linecolor','none');
     title([data{j}.title ' (t = ' num2str(sol.time) ')'])
     hold all; colorbar;

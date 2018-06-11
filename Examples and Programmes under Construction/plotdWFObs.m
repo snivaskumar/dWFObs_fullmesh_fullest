@@ -81,7 +81,18 @@ if (scriptOptions.Animate > 0) && (~rem(sol.k,scriptOptions.Animate))
         for j = 1:length(data)
             subplot(subplotDim(1),subplotDim(2),j);
             V = max(data{j}.z(:));
-            if V > 11; cmax = 13; elseif V > 7; cmax = 9.; else; cmax = 3; end
+%             cmax = V;
+            if V > 11 
+                cmax = 13; 
+            elseif V > 7
+                cmax = 9.; 
+            else 
+                if V > 3
+                    cmax = ceil( mean(data{j}.z(:)) );
+                else
+                    cmax = 3;
+                end
+            end
             if min(data{j}.z(:)) < 0.; cmin = -cmax; else; cmin = 0.0; end
             contourf(data{j}.x,data{j}.y,data{j}.z,cmin:0.1:cmax,'Linecolor','none');
             title([data{j}.title ' (t = ' num2str(sol.time) ')'])

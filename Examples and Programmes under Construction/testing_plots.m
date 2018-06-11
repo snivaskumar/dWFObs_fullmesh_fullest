@@ -58,6 +58,19 @@ scriptOptions22 = scriptOptions; strucObs22 = strucObs;
 %     Wp00{j} = d_Wp{j}; sol_array00{j} = d_sol_array{j}; sys00{j} = d_sys{j};
 %     scriptOptions00{j} = d_scriptOptions{j}; strucObs00{j} = d_strucObs{j};
 % end
+% %DExKF (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clear scriptOptions sol_array strucObs sys Wp
+% load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_ExKF_uinf5_noest_Nofus_turbC/workspace.mat')
+% for j = 1:2
+%     for i = 1:d_Wp{j}.sim.NN
+%         u000{j}(i) = d_sol_array{j}(i).site.u_Inf;
+%         RMSE000{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+%         maxError000{j}(i) = d_sol_array{j}(i).score.maxError;
+%         RMSE_flow000{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+%     end
+%     Wp000{j} = d_Wp{j}; sol_array000{j} = d_sol_array{j}; sys000{j} = d_sys{j};
+%     scriptOptions000{j} = d_scriptOptions{j}; strucObs000{j} = d_strucObs{j};
+% end
 % %DDExKF:1D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % clear scriptOptions sol_array strucObs sys Wp
 % load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_1D_IFAC_uinf5_noest/workspace.mat')
@@ -188,55 +201,110 @@ for j = 1:2
     Wp10{j} = d_Wp{j}; sol_array10{j} = d_sol_array{j}; sys10{j} = d_sys{j};
     scriptOptions10{j} = d_scriptOptions{j}; strucObs10{j} = d_strucObs{j};
 end
+%DDExKF:2D, turbNEW (ICI)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_ICI/workspace.mat')
+for j = 1:2
+    for i = 1:d_Wp{j}.sim.NN
+        u11{j}(i) = d_sol_array{j}(i).site.u_Inf;
+        RMSE11{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+        maxError11{j}(i) = d_sol_array{j}(i).score.maxError;
+        RMSE_flow11{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+    end
+    Wp11{j} = d_Wp{j}; sol_array11{j} = d_sol_array{j}; sys11{j} = d_sys{j};
+    scriptOptions11{j} = d_scriptOptions{j}; strucObs11{j} = d_strucObs{j};
+end
+%DDExKF:2D, turbC (CIc0p2)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear d_scriptOptions d_sol_array d_strucObs d_sys d_Wp
+load('/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue/axi_2turb_alm_turb_DExKF_2D_IFAC_uinf5_noest_CIc0p2_turbC/workspace.mat')
+for j = 1:2
+    for i = 1:d_Wp{j}.sim.NN
+        u12{j}(i) = d_sol_array{j}(i).site.u_Inf;
+        RMSE12{j}(i) = d_sol_array{j}(i).score.RMSE_cline;
+        maxError12{j}(i) = d_sol_array{j}(i).score.maxError;
+        RMSE_flow12{j}(i) = d_sol_array{j}(i).score.RMSE_flow;
+    end
+    Wp12{j} = d_Wp{j}; sol_array12{j} = d_sol_array{j}; sys12{j} = d_sys{j};
+    scriptOptions12{j} = d_scriptOptions{j}; strucObs12{j} = d_strucObs{j};
+end
 
 figure, plot(RMSE0), hold on, plot(RMSE1), plot(RMSE22), 
-plot(RMSE02{1}),plot(RMSE05{1}),plot(RMSE05{2}),plot(RMSE06{1}),
-plot(RMSE10{1})
+% plot(RMSE07{1}),plot(RMSE07{2}),
+% 'DDExKF:2D,sys1 (No Fusion_turbC)','DDExKF:2D,sys2 (No Fusion_turbC)',...
+plot(RMSE08{1}),plot(RMSE09{1}),
+plot(RMSE10{1}),plot(RMSE12{1})
 title('Centreline Error')
-legend('sim','EnKF','DExKF: 2D (arch. 1)','DDExKF:2D (IFAC)',...
-    'DDExKF:2D,sys1 (No Fusion)','DDExKF:2D,sys2 (No Fusion)','DDExKF:2D (CIN)',...
-    'DDExKF:2D (ICI)')
+legend('sim','EnKF','DExKF: 2D (arch. 1)',...
+    'DDExKF:2D (IFAC_turbC)','DDExKF:2D (CIN_turbC)',...
+    'DDExKF:2D (ICI_turbC)','DDExKF:2D (CI_turbC)')
 lq = findobj(gcf,'type','line');
 set(lq,'linewidth',1.15);
 figure, plot(RMSE_flow0), hold on, plot(RMSE_flow1),plot(RMSE_flow22),
-plot(RMSE_flow02{1}),plot(RMSE_flow05{1}),plot(RMSE_flow05{2}),plot(RMSE_flow06{1}),
-plot(RMSE_flow10{1})
+% plot(RMSE_flow07{1}),plot(RMSE_flow07{2}),
+plot(RMSE_flow08{1}),plot(RMSE_flow09{1}),
+plot(RMSE_flow10{1}),plot(RMSE_flow12{1})
 title('Flow Error')
-legend('sim','EnKF','DExKF: 2D (arch. 1)','DDExKF:2D (IFAC)',...
-    'DDExKF:2D,sys1 (No Fusion)','DDExKF:2D,sys2 (No Fusion)','DDExKF:2D (CIN)',...
-    'DDExKF:2D (ICI)')
+legend('sim','EnKF','DExKF: 2D (arch. 1)',...
+    'DDExKF:2D (IFAC_turbC)','DDExKF:2D (CIN_turbC)',...
+    'DDExKF:2D (ICI_turbC)','DDExKF:2D (CI_turbC)')
 lq = findobj(gcf,'type','line');
 set(lq,'linewidth',1.15);
-% figure, plot(RMSE0), hold on, plot(RMSE1), plot(RMSE00{1}), plot(RMSE01{1}),
-% plot(RMSE02{1}),plot(RMSE03{1}),plot(RMSE05{1}),plot(RMSE06{1})
-% legend('sim','EnKF','DExKF (IFAC)','DDExKF:1D (IFAC)','DDExKF:2D (IFAC)',...
-%     'DDExKF:3D (IFAC)','DDExKF:2D (No Fusion)','DDExKF:2D (CIN)')
-% figure, plot(RMSE_flow0), hold on, plot(RMSE_flow1), plot(RMSE_flow00{1}), plot(RMSE_flow01{1}),
-% plot(RMSE_flow02{1}), plot(RMSE_flow03{1}), plot(RMSE_flow05{1}), plot(RMSE_flow06{1})
-% legend('sim','EnKF','DExKF (IFAC)','DDExKF:1D (IFAC)','DDExKF:2D (IFAC)',...
-%     'DDExKF:3D (IFAC)','DDExKF:2D (No Fusion)','DDExKF:2D (CIN)')
 
-% SIM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-% plotWFObs( Wp0,sol_array0,sys0,scriptOptions0,strucObs0 );
-% EnKF%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotWFObs( Wp1,sol_array1,sys1,scriptOptions1,strucObs1 );
-% DExKF: 2D (archiecture 1)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotWFObs( Wp22,sol_array22,sys22,scriptOptions22,strucObs22 );
-% DExKF (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% plotWFObs( Wp00{1},sol_array00{1},sys00{1},scriptOptions00{1},strucObs00{1});
-% DDExKF: 1D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% plotdWFObs( Wp01{1},sol_array01{1},sys01{1},scriptOptions01{1},strucObs01{1} );
-% DDExKF: 2D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotdWFObs( Wp02{1},sol_array02{1},sys02{1},scriptOptions02{1},strucObs02{1} );
-% DDExKF: 3D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% plotdWFObs( Wp03{1},sol_array03{1},sys03{1},scriptOptions03{1},strucObs03{1} );
-% DDExKF: 2Dsq (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% plotdWFObs( Wp04{1},sol_array04{1},sys04{1},scriptOptions04{1},strucObs04{1} );
-% DDExKF: 2D (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotdWFObs( Wp05{1},sol_array05{1},sys05{1},scriptOptions05{1},strucObs05{1} );
-plotdWFObs( Wp05{2},sol_array05{2},sys05{2},scriptOptions05{2},strucObs05{2} );
-% DDExKF: 2D (CIN)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plotdWFObs( Wp06{1},sol_array06{1},sys06{1},scriptOptions06{1},strucObs06{1} );
+% figure, plot(RMSE0), hold on, plot(RMSE1), plot(RMSE22), 
+% % plot(RMSE02{1}),plot(RMSE05{1}),plot(RMSE05{2}),plot(RMSE06{1}),
+% % 'DDExKF:2D (IFAC)','DDExKF:2D,sys1 (No Fusion)','DDExKF:2D,sys2 (No Fusion)','DDExKF:2D (CIN)',...
+% % plot(RMSE07{1}),plot(RMSE07{2}),plot(RMSE08{1}),plot(RMSE09{1}),
+% % 'DDExKF:2D,sys1 (No Fusion_turbC)','DDExKF:2D,sys2 (No Fusion_turbC)','DDExKF:2D (IFAC_turbC)','DDExKF:2D (CIN_turbC)',...
+% plot(RMSE10{1}),plot(RMSE11{1}),plot(RMSE12{1})
+% title('Centreline Error')
+% legend('sim','EnKF','DExKF: 2D (arch. 1)',...
+%     'DDExKF:2D (ICI_turbC)','DDExKF:2D (ICI_turbNEW)','DDExKF:2D (CI_turbC)')
+% lq = findobj(gcf,'type','line');
+% set(lq,'linewidth',1.15);
+% figure, plot(RMSE_flow0), hold on, plot(RMSE_flow1),plot(RMSE_flow22),
+% % plot(RMSE_flow02{1}),plot(RMSE_flow05{1}),plot(RMSE_flow05{2}),plot(RMSE_flow06{1}),
+% % plot(RMSE_flow07{1}),plot(RMSE_flow07{2}),plot(RMSE_flow08{1}),plot(RMSE_flow09{1}),
+% plot(RMSE_flow10{1}),plot(RMSE_flow11{1}),plot(RMSE_flow12{1})
+% title('Flow Error')
+% legend('sim','EnKF','DExKF: 2D (arch. 1)',...
+%     'DDExKF:2D (ICI_turbC)','DDExKF:2D (ICI_turbNEW)','DDExKF:2D (CI_turbC)')
+% lq = findobj(gcf,'type','line');
+% set(lq,'linewidth',1.15);
+
+% % %SIM%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% % plotWFObs( Wp0,sol_array0,sys0,scriptOptions0,strucObs0 );
+% % EnKF%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotWFObs( Wp1,sol_array1,sys1,scriptOptions1,strucObs1 );
+% %DExKF: 2D (archiecture 1)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotWFObs( Wp22,sol_array22,sys22,scriptOptions22,strucObs22 );
+% % %DExKF (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % plotdWFObs( Wp00{1},sol_array00{1},sys00{1},scriptOptions00{1},strucObs00{1});
+% % %DDExKF: 1D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % plotdWFObs( Wp01{1},sol_array01{1},sys01{1},scriptOptions01{1},strucObs01{1} );
+% % DDExKF: 2D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp02{1},sol_array02{1},sys02{1},scriptOptions02{1},strucObs02{1} );
+% % %DDExKF: 3D (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % plotdWFObs( Wp03{1},sol_array03{1},sys03{1},scriptOptions03{1},strucObs03{1} );
+% % %DDExKF: 2Dsq (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % plotdWFObs( Wp04{1},sol_array04{1},sys04{1},scriptOptions04{1},strucObs04{1} );
+% %DDExKF: 2D, turbNEW (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp05{1},sol_array05{1},sys05{1},scriptOptions05{1},strucObs05{1} );
+% plotdWFObs( Wp05{2},sol_array05{2},sys05{2},scriptOptions05{2},strucObs05{2} );
+% %DDExKF: 2D, turbNEW (CIN)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp06{1},sol_array06{1},sys06{1},scriptOptions06{1},strucObs06{1} );
+% %DDExKF:2D, turbC (No Fusion)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp07{1},sol_array07{1},sys07{1},scriptOptions07{1},strucObs07{1} );
+% plotdWFObs( Wp07{2},sol_array07{2},sys07{2},scriptOptions07{2},strucObs07{2} );
+% %DDExKF:2D, turbC (IFAC)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp08{1},sol_array08{1},sys08{1},scriptOptions08{1},strucObs08{1} );
+% %DDExKF:2D, turbC (CIN)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp09{1},sol_array09{1},sys09{1},scriptOptions09{1},strucObs09{1} );
+% %DDExKF:2D, turbC (ICI)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp10{1},sol_array10{1},sys10{1},scriptOptions10{1},strucObs10{1} );
+% % %DDExKF:2D, turbNEW (ICI)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % plotdWFObs( Wp11{1},sol_array11{1},sys11{1},scriptOptions11{1},strucObs11{1} );
+% %DDExKF:2D, turbC (CIc0p2)%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plotdWFObs( Wp12{1},sol_array12{1},sys12{1},scriptOptions12{1},strucObs12{1} );
 %% U_Inf = 11m/s and it is not estimated (EnKF, DExKF_IFAC:1D,2D)
 % With E
 clear all

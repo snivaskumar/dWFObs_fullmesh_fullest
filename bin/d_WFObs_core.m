@@ -83,19 +83,23 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
         % Calculate optimal solution according to filter of choice
         [d_Wp{i},d_sol{i},d_strucObs{i}] = d_WFObs_o(d_strucObs{i},d_Wp{i},d_sys{i},d_sol{i},d_scriptOptions{i});
     end
+    filter          = strucObs.filtertype; 
     fusion          = upper( scriptOptions.fusion );
     fusion_type     = upper( strucObs.fusionDomain );
-    if strcmp(fusion,'YES')
-        if ( d_sol{i}.k == 1 )||( rem(d_sol{i}.k,10) == 0 )
-            fusion_weight   = 'OPTIMAL';
-            constant        = strucObs.fusion_CIconstant; 
-        else
-            fusion_weight   = upper( strucObs.fusion_weight );
-            constant        = strucObs.omega;
-        end
-    end
-    if ( strcmp(strucObs.filtertype,'dexkf')||...
-            strcmp(strucObs.filtertype,'exkf') )&&...
+    fusion_weight   = upper( strucObs.fusion_weight );
+    constant        = strucObs.fusion_CIconstant; 
+    iteration       = strucObs.fusion_CIiteration; 
+%     if strcmp(fusion,'YES')
+%         if ( d_sol{i}.k == 1 )||( rem(d_sol{i}.k,10) == 0 )
+%             fusion_weight   = 'OPTIMAL';
+%             constant        = strucObs.fusion_CIconstant; 
+%         else
+%             fusion_weight   = upper( strucObs.fusion_weight );
+%             constant        = strucObs.omega;
+%         end
+%     end
+    if ( strcmp(filter,'dexkf')||...
+            strcmp(filter,'exkf') )&&...
             strcmp(fusion,'YES')
         n = length(d_sol{1}.x);
         d_x{1} = [1:n];        d_x{2} = [1:n];
@@ -104,7 +108,7 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
         z{1} = d_sol{1}.x;      Z{1} = d_strucObs{1}.Pk;
         z{2} = d_sol{2}.x;      Z{2} = d_strucObs{2}.Pk;
         if strcmp(fusion_type,'IFAC') 
-            [xe,Ce] = fuze(z,Z,d_x,tur,n,0,0,[1:n]','C',1,'CONSTANT');
+            [xe,Ce] = fuze(z,Z,d_x,tur,n,0,0,[1:n]','C',1,'CONSTANT',1);
             tmp1 = ismember(x,d_x{1});
             tmp2 = ismember(x,d_x{2});
             d_sol{1}.x = xe(tmp1);    d_strucObs{1}.Pk = Ce(tmp1,tmp1);
@@ -118,7 +122,7 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
 %             [zf, Zf, ~] = fuze2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant);
 %             Zf = pinv( Zf );      
 %             zf = Zf*zf;        
-            [zf, Zf, ~, strucObs.omega] = fuse2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant);
+            [zf, Zf, ~, strucObs.omega] = fuse2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant,iteration,filter);
 %             d_sol{1}.x = zf{1};         d_strucObs{1}.Pk = Zf{1};
 %             d_sol{2}.x = zf{2};         d_strucObs{2}.Pk = Zf{2};
             d_sol{1}.x = zf;         d_strucObs{1}.Pk = Zf;

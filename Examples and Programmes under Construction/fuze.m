@@ -1,4 +1,4 @@
-function [xe,Ce] = fuze(z,Z,x,hr,n,Zkk1,xkk1,x_est,typeCZ,typeIFAC,typeWeight);
+function [xe,Ce] = fuze(z,Z,x,hr,n,Zkk1,xkk1,x_est,typeCZ,typeIFAC,typeWeight,weight);
 % function [xe,Ce] = fuze(z,Z,x,hr,n,x_est,typeCZ);
 % [xe,Ce] = fuze(z,Z,x,hr,n,x_est,typeCZ);
 % typeCZ  1 if Z = Co-Variance,  
@@ -41,7 +41,11 @@ for i = 1:hr
         Zp(x{i},x{i})       = Zkk1{i};
     end
     if strcmp(typeWeight,'CONSTANT')
-        w = l;
+        if strcmp(weight,'l')
+            w = l;
+        else
+            w = 1/weight;
+        end
         Ze(k+1:nn,k+1:nn)   = pinv( (1/w).*C{i} );
     elseif strcmp(typeWeight,'OPTIMAL')
         Ze(k+1:nn,k+1:nn)   = C{i};

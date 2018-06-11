@@ -34,12 +34,13 @@ strucObs.sensorsPath = 'sensors_2turb_alm'; % measurement setup filename (see '/
         
 scriptOptions.Turbulence    = 'centralize'; % 'centralize' for same old turbulence model
 scriptOptions.sysLen        = 4;
-scriptOptions.fusion        = 'no';
-strucObs.fusionDomain       = 'ICI';
-strucObs.fusion_weight      = 'constant';    % IFAC Weight
+scriptOptions.fusion        = 'yes';
+strucObs.fusionDomain       = 'ici';
+strucObs.fusion_weight      = 'constant';  
+strucObs.fusion_CIiteration = 5;            % # of iterations the optimization problem is run
 strucObs.fusion_CIconstant  = 0.5;
 % Kalman filter settings
-strucObs.filtertype = 'exkf'; % Observer types are outlined next
+strucObs.filtertype = 'dexkf'; % Observer types are outlined next
 switch lower(strucObs.filtertype)
     % Distributed Extended Kalman filter (ExKF)
     case {'dexkf'}
@@ -56,7 +57,7 @@ switch lower(strucObs.filtertype)
         strucObs.tune.est  = false; % Estimate model parameters
         
         strucObs.Subsys_domainShape = 'circle'; %'square' or 'circle'
-        strucObs.Subsys_length  = 2;        % Length of the subsystem around each turbine 
+        strucObs.Subsys_length  = 3;        % Length of the subsystem around each turbine 
                                 % Subsys_length = 1  if Subsys_length = 1D
                                 % (D = Rotor length)
                                 % Subsys_length = 2  if Subsys_length = 2D

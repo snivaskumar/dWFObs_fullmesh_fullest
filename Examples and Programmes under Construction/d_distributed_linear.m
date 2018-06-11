@@ -223,7 +223,7 @@ elseif strcmp(type,'IFAC')
     4;
     typeIFAC    = strucObs.IFAC_type;
     typeWeight  = upper(strucObs.IFACWeight);
-    [xtmp,Ptmp] = fuze(zf,Pf,xf,hr,n,Zlkk1,xkk1,x_est,typeCZ,typeIFAC,typeWeight);
+    [xtmp,Ptmp] = fuze(zf,Pf,xf,hr,n,Zlkk1,xkk1,x_est,typeCZ,typeIFAC,typeWeight,'l');
 elseif strcmp(type,'CI')
     for i = 1:hr
         tmp             = zeros(n,n);
