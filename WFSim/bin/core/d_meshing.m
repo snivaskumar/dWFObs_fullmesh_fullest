@@ -1,4 +1,4 @@
-function [ Wp ] = d_meshing( scenarioName, plotMesh, PrintGridMismatch, exportPressures, sysLen)
+function [ Wp ] = d_meshing( scenarioName, plotMesh, PrintGridMismatch, exportPressures, sysLen, U_Inf)
 %MESHING Meshing and settings function for the WFSim code
 % This code includes all the topology information, atmospheric
 % information, turbine properties and turbine control settings for any
@@ -321,7 +321,8 @@ for i = 1:tur
         for j = (ID{i})
             plot([Cry(j)-Drotor/2;Cry(j)+Drotor/2],[Crx(j);Crx(j)],'LineWidth',3.0,'DisplayName',['Turbine ' num2str(j)])
             hold on
-            text(Cry(j),Crx(j),['T ' num2str(j)])
+            t = text(Cry(j),Crx(j),['T ' num2str(j)]);
+            t(1).FontSize = 14;
         end;
         axis equal
         xlim([-0.1*Ly 1.2*Ly]);
@@ -431,8 +432,11 @@ for i = 1:tur
     Wp{i}.turbine.actual_powerscale    = powerscale;
     % Wp{i}.site.lmu                   = 5;
     Wp{i}.site.actual_lmu              = lmu;
-    Wp{i}.site.u_Inf                 = 11;
-    Wp{i}.site.actual_u_Inf            = u_Inf;
+    if strcmp( upper(U_Inf),'ACTUAL' )
+        Wp{i}.site.actual_u_Inf            = u_Inf;
+    else
+        Wp{i}.site.u_Inf                 = U_Inf;
+    end
     % Wp{i}.site.v_Inf                   = 5;
     Wp{i}.site.actual_v_Inf            = v_Inf;
     

@@ -1,4 +1,4 @@
-function [zf, Zf, xf, omega] = fuse2(z1,z2,Z1,Z2,x1,x2,type,fusion_weight,constant,iteration,filter);
+function [zf, Zf, xf, omega] = fuse2(z1,z2,Z1,Z2,x1,x2,type,fusion_weight,constant,iteration,filter,k);
 % [zf, Zf, xf] = fuze2(z1,z2,Z1,Z2,x1,x2,type);
 % type    1 for CI, 2 for EI, 3 for ICI
 
@@ -46,7 +46,7 @@ if strcmp(type,'CIN')
     ZA      = X_a;
     ZB      = X_b;
     
-    if strcmp(filter,'exkf')
+    if strcmp(filter,'exkf')||( rem(k,50)==0 )
         ZAA     = pinv(ZA);
         ZBB     = pinv(ZB);
     else
@@ -59,17 +59,17 @@ if strcmp(type,'CIN')
 % %     Zf      = inv(pinv(X_a) + pinv(X_b));
 % %     zf      = Zf*(pinv(X_a)*x_a + pinv(X_b)*x_b);
     0;
-elseif strcmp(type,'CI2')
+elseif strcmp(type,'CI')||strcmp(type,'CI2')
     % CI
     ZA      = X_a;
     ZB      = X_b;
-    if strcmp(filter,'exkf')
+%     if strcmp(filter,'exkf')||( rem(k,50)==0 )
         ZAA     = pinv(ZA);
         ZBB     = pinv(ZB);
-    else
-        ZAA     = inv(ZA);
-        ZBB     = inv(ZB);
-    end
+%     else
+%         ZAA     = inv(ZA);
+%         ZBB     = inv(ZB);
+%     end
     if strcmp(fusion_weight,'OPTIMAL')
         f       = @(w) trace( inv(w*ZAA + (1-w)*ZBB) ); % arg (min -f) = arg (max f)
         options = optimset('MaxIter',iteration,'Display','off');
@@ -117,7 +117,7 @@ elseif strcmp(type,'ICI')
     ZA      = X_a;
     ZB      = X_b;
     
-    if strcmp(filter,'exkf')
+    if strcmp(filter,'exkf')||( rem(k,50)==0 )
         ZAA     = pinv(ZA);
         ZBB     = pinv(ZB);
     else
@@ -139,7 +139,7 @@ elseif strcmp(type,'ICI')
     else
         Zij     = pinv(Xij); 
     end
-    Zf      = inv(ZAA + ZBB - Zij);
+    Zf      = pinv(ZAA + ZBB - Zij);
 
     K = Zf*(ZAA - omega*Zij);
     L = Zf*(ZBB - (1 - omega)*Zij);
