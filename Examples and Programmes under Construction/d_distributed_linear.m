@@ -247,8 +247,29 @@ elseif strcmp(type,'CI')
     end
     Ptmp = pinv(Ptmp);
     xtmp = Ptmp*xtmp;
+elseif strcmp(type,'Bar')
+    if strcmp(typeCZ,'C')
+        Pftmp = Pf;
+        zftmp = zf;
+    else
+        for i = 1:hr
+            Pftmp{i} = inv( Pf{i} );
+            zftmp{i} = Pftmp{i}*zf{i};
+        end
+    end
+     Pff = inv(Pf{1}+Pf{2});
+     zftmp{1} = zftmp{1} + Pf{1}*Pff*(zf{2}-zf{1});
+     zftmp{2} = zftmp{2} + Pf{2}*Pff*(zf{1}-zf{2});
+        
+     Pftmp{1} = ( eye(n,n)-Pf{1}*Pff )*Pf{1} ;
+     Pftmp{2} = ( eye(n,n)-Pf{2}*Pff )*Pf{2} ;
+        
+     zf = zftmp;
+     Pf = Pftmp;
+     
+     Ptmp = Pf{1};
+     xtmp = zf{1};
 end
-
 if strcmp(type,'NO FUSION')||strcmp(type,'NO')     %No Fusion
     Pkk             = 5*eye(n,n);
     xkk             = zeros(n,1);
@@ -264,7 +285,8 @@ if strcmp(type,'NO FUSION')||strcmp(type,'NO')     %No Fusion
     end
     xkk(x_unest)    = xkk1(x_unest);
 else        %Fusion
-    Pkk             = 5*eye(n,n);
+    P_unest         = strucObs.P_unest;
+    Pkk             = P_unest*eye(n,n);
     Pkk(x_est,x_est)= Ptmp;
 
     xkk             = zeros(n,1);

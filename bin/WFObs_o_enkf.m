@@ -210,6 +210,9 @@ strucObs.Aen = Aenf + strucObs.cross_corrfactor.* (Aenft*Yenft') * ...
                 pinv( strucObs.auto_corrfactor .* (Yenft*Yenft') + RNoise*RNoise')*Dent;
 xSolAll = mean(strucObs.Aen,2);
 
+Aen = strucObs.Aen;
+Aent = Aen - repmat(mean(Aen,2),1,strucObs.nrens); % Deviation in state
+strucObs.Pk = (1/(strucObs.nrens-1))*Aent*Aent';
 
 %% Post-processing
 if strucObs.tune.est

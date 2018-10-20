@@ -70,7 +70,7 @@ d_sol_array = cell(tur,1);
 while d_sol{1}.k < d_Wp{1}.sim.NN
     timerCPU = tic;                 % Start iteration timer
 %     d_sol_array = cell(tur,1);
-    for i = 1:tur
+    parfor i = 1:tur
         d_sol{i}.k    = d_sol{i}.k + 1;           % Timestep forward
         d_sol{i}.time = d_Wp{i}.sim.time(d_sol{i}.k+1);% Timestep forward
 
@@ -99,7 +99,7 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
 %         end
 %     end
     if ( strcmp(filter,'dexkf')||...
-            strcmp(filter,'exkf') )&&...
+            strcmp(filter,'exkf')||strcmp(filter,'enkf') )&&...
             strcmp(fusion,'YES')
         n = length(d_sol{1}.x);
         d_x{1} = [1:n];        d_x{2} = [1:n];
@@ -116,13 +116,26 @@ while d_sol{1}.k < d_Wp{1}.sim.NN
         elseif strcmp(fusion_type,'D_IFAC') 
             [d_sol{1}.x,d_strucObs{1}.Pk] = d_fuze(z,Z,d_x,tur,1,0,0,[1:n]','C',1,fusion_weight);
             [d_sol{2}.x,d_strucObs{2}.Pk] = d_fuze(z,Z,d_x,tur,2,0,0,[1:n]','C',1,fusion_weight);
+        elseif strcmp(fusion_type,'BAR')
+            Pftmp = Z;
+            zftmp = z;
+            
+            Pff = inv(Z{1}+Z{2});
+            zftmp{1} = zftmp{1} + Z{1}*Pff*(z{2}-z{1});
+            zftmp{2} = zftmp{2} + Z{2}*Pff*(z{1}-z{2});
+
+            Pftmp{1} = ( eye(n,n)-Z{1}*Pff )*Z{1} ;
+            Pftmp{2} = ( eye(n,n)-Z{2}*Pff )*Z{2} ;
+            
+            d_sol{1}.x = zftmp{1};          d_strucObs{1}.Pk = Pftmp{1};
+            d_sol{2}.x = zftmp{2};          d_strucObs{2}.Pk = Pftmp{2};
         else
 %             Z{1} = pinv( Z{1} );        Z{2} = pinv( Z{2} );
 %             z{1} = Z{1}*z{1};           z{2} = Z{2}*z{2};
 %             [zf, Zf, ~] = fuze2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant);
 %             Zf = pinv( Zf );      
 %             zf = Zf*zf;        
-            [zf, Zf, ~, strucObs.omega] = fuse2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant,iteration,filter);
+            [zf, Zf, ~, strucObs.omega] = fuse2(z{1},z{2},Z{1},Z{2},d_x{1}',d_x{2}',fusion_type,fusion_weight,constant,iteration,filter,d_sol{1}.k);
 %             d_sol{1}.x = zf{1};         d_strucObs{1}.Pk = Zf{1};
 %             d_sol{2}.x = zf{2};         d_strucObs{2}.Pk = Zf{2};
             d_sol{1}.x = zf;         d_strucObs{1}.Pk = Zf;

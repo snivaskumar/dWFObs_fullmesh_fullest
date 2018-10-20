@@ -108,12 +108,21 @@ if sol_in.k == 1
         strucObs.Pk    = sparse(eye(strucObs.size_state))*strucObs.P_0;
         strucObs.Htt   = sparse(eye(strucObs.size_state));
         strucObs.Htt   = strucObs.Htt(strucObs.obs_array,:);
-        strucObs.Q_k   = strucObs.Q_k*eye(strucObs.size_state);
+        Qu             = strucObs.Q_e.u*ones(1,Wp.Nu);
+        Qv             = strucObs.Q_e.v*ones(1,Wp.Nv);
+        Qp             = strucObs.Q_e.p*ones(1,Wp.Np);
+        strucObs.Q_k   = [Qu, Qv, Qp].*eye(strucObs.size_state);
+
     else
         strucObs.Pk    = sparse(eye(strucObs.size_output))*strucObs.P_0;
         strucObs.Htt   = sparse(eye(strucObs.size_output));
         strucObs.Htt   = strucObs.Htt(strucObs.obs_array,:);
-        strucObs.Q_k   = strucObs.Q_k*eye(strucObs.size_output);
+        Qu             = strucObs.Q_e.u*eye(Wp.Nu);
+        Qv             = strucObs.Q_e.v*eye(Wp.Nv);
+        strucObs.Q_k   = [Qu, zeros(Wp.Nu,Wp.Nv); zeros(Wp.Nv,Wp.Nu) Qv];
+%         Qu             = strucObs.Q_e.u*ones(1,Wp.Nu);
+%         Qv             = strucObs.Q_e.v*ones(1,Wp.Nv);
+%         strucObs.Q_k   = [Qu, Qv].*eye(strucObs.size_output);
     end;
 end;
 Ck          = strucObs.Htt;
@@ -187,7 +196,7 @@ Subsys_length   = strucObs.Subsys_length;
 % typeCZ          = strucObs.typeCZ;
 % tic
 if (sol_in.k == 1) || (rem(sol_in.k,NL) == 0)
-    [x,d,p, F,D,E,G,H,Q,R,l,n,x_est,x_unest, P_unest] = d_subsystem_turbine(strucObs,sol_in, p,Fk,Bk,Ck,QQ,RR, tur,state,strucObs.turbine, Subsys_length,RD, Sk1k1);
+    [x,d,p, F,D,E,G,H,Q,R,l,n,x_est,x_unest, P_unest] = d_subsystem_turbine(Wp, strucObs,sol_in, p,Fk,Bk,Ck,QQ,RR, tur,state,strucObs.turbine, Subsys_length,RD, Sk1k1);
     strucObs.subsystem.x = x;           strucObs.subsystem.d = d;
     strucObs.subsystem.F = F;           strucObs.subsystem.D = D;   strucObs.subsystem.E = E;   
     strucObs.subsystem.G = G;           strucObs.subsystem.H = H;

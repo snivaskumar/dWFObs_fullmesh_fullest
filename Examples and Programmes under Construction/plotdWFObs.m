@@ -12,8 +12,7 @@ scriptOptions.plotPower = 0;
 scriptOptions.plotError = 0;
 scriptOptions.plotCenterline = 0;
 scriptOptions.powerForecast = 0;
-scriptOptions.savePath = '/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_Queue';
-% scriptOptions.savePath = 'C:\Users\Nivas Temp\Documents\Nivas\MSc Thesis\WFObs\results\tmp';
+scriptOptions.savePath = '/Users/Nivas_Kumar/Documents/NivasStudyMaterials/TUDelft/EnKF+WFSim/dWFObs_fullmesh_fullest_Queue';
 
 % Import variables
 sol          = sol_array(end); 
@@ -29,7 +28,8 @@ if (scriptOptions.Animate > 0) && (~rem(sol.k,scriptOptions.Animate))
     
         if scriptOptions.plotContour
             scrsz = get(0,'ScreenSize'); 
-            hFigs{1}=figure('color',[1 1 1],'Position',[50 50 floor(scrsz(3)/1.1) floor(scrsz(4)/1.1)], 'MenuBar','none','ToolBar','none','visible', 'on');
+            hFigs{1}=figure;
+%             hFigs{1}=figure('color',[1 1 1],'Position',[50 50 floor(scrsz(3)/1.1) floor(scrsz(4)/1.1)], 'MenuBar','none','ToolBar','none','visible', 'on');
             set(hFigs{1},'defaultTextInterpreter','latex')
         end
         if scriptOptions.plotPower
@@ -94,6 +94,10 @@ if (scriptOptions.Animate > 0) && (~rem(sol.k,scriptOptions.Animate))
                 end
             end
             if min(data{j}.z(:)) < 0.; cmin = -cmax; else; cmin = 0.0; end
+            if j ~= 3
+                cmax = 12;
+                cmin = 0;
+            end
             contourf(data{j}.x,data{j}.y,data{j}.z,cmin:0.1:cmax,'Linecolor','none');
             title([data{j}.title ' (t = ' num2str(sol.time) ')'])
             hold all; colorbar;
@@ -124,7 +128,7 @@ if (scriptOptions.Animate > 0) && (~rem(sol.k,scriptOptions.Animate))
         % Save figures to an external file, if necessary
         if scriptOptions.savePlots
             drawnow;
-            saveas(hFigs{1},[scriptOptions.savePath '/' strucObs.filtertype '_cplot' num2str(sol.k) '.png']);
+            saveas(hFigs{1},[scriptOptions.savePath '/' strucObs.filtertype '_cplot' num2str(sol.k) '.epsc']);
         end
     end
     
